@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url               = env("DATABASE_URL")
+  directUrl         = env("DIRECT_URL")
+}
+
+
+model t_Post {
+  id            String      @id @default(uuid())
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  coverImage    String
+  title         String      @db.VarChar(255)
+  slug          String      @db.VarChar(255)
+  description   String
+  content       String
+  published     Boolean     @default(false)
+  tags          String[]    @db.VarChar(100)
+
+  author        t_User      @relation(fields: [authorId], references: [id])
+  authorId      String
+  posts         t_Category_On_Post[]
+
+  @@index([authorId])
+}
+
+model t_User_Profile {
+  id          String        @id @default(uuid())
+  bio         String
+  user        t_User        @relation(fields: [userId], references: [id])
+  userId      String        @unique
+
+  @@index([userId])
+
+}
+
+model t_User {
+  id          String        @id @default(uuid())
+  email       String        @unique
+  name        String?
+  posts       t_Post[]
+  profile     t_User_Profile?
+}
+
+model t_Category {
+    id        String         @id @default(uuid())
+    name      String         @db.VarChar(100)
+    slug      String         @db.VarChar(100)
+    posts     t_Category_On_Post[]
+}
+
+model t_Category_On_Post {
+  post         t_Post        @relation(fields: [postId], references: [id])
+  postId       String
+  category     t_Category    @relation(fields: [categoryId], references: [id])
+  categoryId   String
+
+  @@id([postId, categoryId])
+}
