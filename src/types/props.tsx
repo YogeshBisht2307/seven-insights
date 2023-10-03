@@ -10,3 +10,15 @@ export interface TopBarProps {
 export interface ProfileMenuProps {
     supabase: SupabaseClient
 }
+
+export interface PostMinimal{
+    id: String,
+    title: String,
+    slug: String,
+    createdAt: Date,
+    published: boolean
+}
+
+export interface PostTableProps {
+    posts: PostMinimal[]
+}

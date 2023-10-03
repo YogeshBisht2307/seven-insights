@@ -1,8 +1,21 @@
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-const Users = () => {
-  return (
-    <div>Users</div>
-  )
+export const dynamic = "force-dynamic"
+
+
+export default async function Users() {
+    const supabase = createServerComponentClient({cookies});
+    const { data: { session } } = await supabase.auth.getSession();
+
+    if(!session){
+        redirect("/login");
+    }
+
+    return (
+        <div>
+            <h1 className="text-2xl font-semibold pb-4">Users</h1>
+        </div>
+    )
 }
-
-export default Users;

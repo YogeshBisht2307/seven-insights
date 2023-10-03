@@ -28,7 +28,7 @@ export default function AdminLayout({ children }: {
         >
           <Sidebar/>
           <main className={"p-4 sm:ml-64"}>
-            <div className="p-4 border-2 border-dashed rounded-lg mt-14">
+            <div className="p-4 rounded-lg mt-14">
               {children}
             </div>
           </main>
