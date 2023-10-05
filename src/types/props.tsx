@@ -22,3 +22,15 @@ export interface PostMinimal{
 export interface PostTableProps {
     posts: PostMinimal[]
 }
+
+export interface UpdatePostStatusType {
+    published: boolean
+}
+
+export interface UpdatePostApiContext{
+    params: UpdatePostStatusApiParams
+}
+
+export interface UpdatePostStatusApiParams{
+    id: string
+}
