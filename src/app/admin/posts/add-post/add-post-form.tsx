@@ -20,15 +20,32 @@ import { Tag, TagInput } from '@/components/ui/tag-input'
 
 import { Input } from "@/components/ui/input";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { Category, MultiSelect } from '@/components/ui/multi-select';
 
 const formSchema = z.object({
   title: z.string().min(5).max(200),
   slug: z.string().min(5).max(200),
-  image: z.any(),
-  tags: z.array(z.object({
-    id: z.string(),
-    text: z.string()
-  }))
+  image: z.array(
+    z.any()
+  ).refine(data => data.length === 1, {
+    message: "You must select exactly one file.",
+  }),
+  tags: z.array(
+    z.object({
+      id: z.string(),
+      text: z.string()
+    })
+  ).refine(data => data.length >= 1, {
+    message: "You must select at least one tag.",
+  }),
+  categories: z.array(
+    z.object({
+      label: z.string(),
+      value: z.string()
+    })
+  ).refine(data => data.length >= 1, {
+    message: "You must select at least one category.",
+  }),
 })
 
 
@@ -36,16 +53,24 @@ const AddPostForm = () => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [tags, setTags] = React.useState<Tag[]>([]);
-
+  const [categories, setCategories] = React.useState<Category[]>([])
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
       slug: "",
-      image: null,
+      image: [],
+      tags: [],
+      categories: []
     },
   })
+
+  const selectable = [
+    { value: 'chocolate', label: 'Chocolate' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' }
+  ]
 
   const { setValue: formSetValue } = form;
 
@@ -56,6 +81,16 @@ const AddPostForm = () => {
     setIsSubmitting(false);
     router.refresh();
   }
+
+  const handleDrop = (event: React.DragEvent) => {
+    event.preventDefault();
+    const files = Array.from(event.dataTransfer.files);
+    formSetValue("image", files)
+  };
+
+  const handleDragOver = (event: React.DragEvent) => {
+    event.preventDefault();
+  };
 
   return (
     <Form {...form}>
@@ -113,6 +148,30 @@ const AddPostForm = () => {
             </FormItem>
           )}
         />
+
+        <FormField
+          control={form.control}
+          name="categories"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <MultiSelect
+                  {...field}
+                  placeholder="Enter Category"
+                  selected={categories}
+                  className='py-1'
+                  setSelected={(categories) => {
+                    setCategories(categories);
+                    formSetValue("categories", categories as [Category, ...Category[]]);
+                  }}
+                  selectables={selectable}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="image"
@@ -120,7 +179,10 @@ const AddPostForm = () => {
             <FormItem>
               <FormControl className="flex items-center justify-center w-full">
                 <FormLabel htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed rounded-lg cursor-pointer">
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  <div 
+                    onDrop={(event) => handleDrop(event)}
+                    onDragOver={(event) => handleDragOver(event)}
+                    className="flex flex-col items-center justify-center pt-5 pb-6">
                     <svg className="w-8 h-8 mb-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
                       <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
                     </svg>
@@ -133,7 +195,7 @@ const AddPostForm = () => {
                     id="dropzone-file"
                     className="hidden"
                     onChange={(e) =>
-                      field.onChange(e.target.files ? e.target.files[0] : null)
+                      field.onChange(e.target.files ? [e.target.files[0]] : [])
                     }
                   />
                 </FormLabel>
