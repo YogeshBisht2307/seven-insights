@@ -51,6 +51,7 @@ import {
   AlertDialogCancel,
   AlertDialogAction
 } from "@/components/ui/alert-dialog"
+import { updatePostStatusAction } from "@/actions"
 
 
 export const PostTable = (props: PostTableProps) => {
@@ -63,26 +64,10 @@ export const PostTable = (props: PostTableProps) => {
 
 
   const updatePostStatus = async (id: string, published: boolean) => {
-    try {
-      const res = await fetch(`http://localhost:3000/api/admin/posts/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ "published": published })
-      })
-
-      if (!res.ok) {
-        throw Error("Failed to update post status")
-      }
-
+      let errorCode = await updatePostStatusAction(id, published);
       setPosts(posts.map(item =>
         item.id === id ? { ...item, published: published } : item
-      ))
-
-    } catch (error) {
-      console.log(error);
-    }
+      ));
   }
 
   const deletePost = async (id: string) => {

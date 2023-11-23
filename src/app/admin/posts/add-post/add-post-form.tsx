@@ -48,8 +48,11 @@ const formSchema = z.object({
   }),
 })
 
+interface AddPostFormProps {
+  categories: Category[]
+}
 
-const AddPostForm = () => {
+const AddPostForm = (props: AddPostFormProps) => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [tags, setTags] = React.useState<Tag[]>([]);
@@ -65,12 +68,6 @@ const AddPostForm = () => {
       categories: []
     },
   })
-
-  const selectable = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-  ]
 
   const { setValue: formSetValue } = form;
 
@@ -164,7 +161,7 @@ const AddPostForm = () => {
                     setCategories(categories);
                     formSetValue("categories", categories as [Category, ...Category[]]);
                   }}
-                  selectables={selectable}
+                  selectables={props.categories}
                 />
               </FormControl>
               <FormMessage />

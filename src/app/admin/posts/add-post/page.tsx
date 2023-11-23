@@ -3,6 +3,7 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import AddPostForm from "./add-post-form";
+import { getCategories } from "@/data/queries";
 
 
 export const dynamic = "force-dynamic"
@@ -15,6 +16,11 @@ export default async function AddPost() {
     if (!session) {
         redirect("/login");
     }
+
+    const categorEntities = await getCategories();
+    const categories = categorEntities.map(entity => {
+        return { value: entity.id, label: entity.name };
+    });
 
     return (
         <div>
@@ -42,7 +48,7 @@ export default async function AddPost() {
                 </ul>
             </div>
             <div className="mt-8">
-                <AddPostForm />
+                <AddPostForm categories={categories} />
             </div>
         </div>
     )

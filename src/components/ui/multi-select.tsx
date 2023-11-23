@@ -73,12 +73,13 @@ const categoryVariants = cva(
       },
     }
   );
-  
+
   export enum Delimiter {
       Comma = ',',
       Enter = 'Enter',
       Space = ' '
   }
+
   export type Category = {
     value: string;
     label: string;

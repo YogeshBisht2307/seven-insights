@@ -25,3 +25,13 @@ export const updatePostStatus = async (
         data: data,
     })
 }
+
+export const getCategories = async () => {
+    return await prisma.t_Category.findMany({
+        select: {
+            id: true,
+            name: true,
+            slug: true
+        }
+    })
+}
