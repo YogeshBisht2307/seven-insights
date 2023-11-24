@@ -10,8 +10,9 @@ export const getPosts = async () => {
             slug: true,
             createdAt: true,
             published: true
-        }
-    })
+        },
+        where: { deleted: false }
+    });
 }
 
 export const updatePostStatus = async (
@@ -20,10 +21,10 @@ export const updatePostStatus = async (
 ) => {
     return await prisma.t_Post.update({
         where: {
-          id: id,
+            id: id,
         },
         data: data,
-    })
+    });
 }
 
 export const getCategories = async () => {
@@ -33,5 +34,18 @@ export const getCategories = async () => {
             name: true,
             slug: true
         }
-    })
+    });
+}
+
+export const softDeletePostById = async (id: string) => {
+    return await prisma.t_Post.update({
+        where: { id: id },
+        data: { deleted: true }
+    });
+}
+
+export const hardDeletePostById = async (id: string) => {
+    return await prisma.t_Post.delete({
+        where: { id: id }
+    });
 }

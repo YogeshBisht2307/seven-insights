@@ -27,10 +27,20 @@ export interface UpdatePostStatusType {
     published: boolean
 }
 
-export interface UpdatePostApiContext{
+export interface UpdatePostApiContext {
     params: UpdatePostStatusApiParams
 }
 
-export interface UpdatePostStatusApiParams{
+export interface UpdatePostStatusApiParams {
     id: string
+}
+
+export interface CategoryEntity {
+    id: string,
+    name: string,
+    slug: string
+}
+
+export interface AddPostFormProps {
+    categories: CategoryEntity[]
 }

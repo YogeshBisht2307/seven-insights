@@ -18,10 +18,6 @@ export default async function AddPost() {
     }
 
     const categorEntities = await getCategories();
-    const categories = categorEntities.map(entity => {
-        return { value: entity.id, label: entity.name };
-    });
-
     return (
         <div>
             <div>
@@ -48,7 +44,7 @@ export default async function AddPost() {
                 </ul>
             </div>
             <div className="mt-8">
-                <AddPostForm categories={categories} />
+                <AddPostForm categories={categorEntities} />
             </div>
         </div>
     )

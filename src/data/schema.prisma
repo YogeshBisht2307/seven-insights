@@ -20,6 +20,7 @@ model t_Post {
   content       String
   published     Boolean     @default(false)
   tags          String[]    @db.VarChar(100)
+  deleted       Boolean      @default(false)
 
   author        t_User      @relation(fields: [authorId], references: [id])
   authorId      String

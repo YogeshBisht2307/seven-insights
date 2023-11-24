@@ -51,7 +51,7 @@ import {
   AlertDialogCancel,
   AlertDialogAction
 } from "@/components/ui/alert-dialog"
-import { updatePostStatusAction } from "@/actions"
+import { updatePostStatusAction, deletePostByIdAction } from "@/actions"
 
 
 export const PostTable = (props: PostTableProps) => {
@@ -64,13 +64,24 @@ export const PostTable = (props: PostTableProps) => {
 
 
   const updatePostStatus = async (id: string, published: boolean) => {
-      let errorCode = await updatePostStatusAction(id, published);
-      setPosts(posts.map(item =>
-        item.id === id ? { ...item, published: published } : item
-      ));
+    let errorCode = await updatePostStatusAction(id, published);
+    if (errorCode != 200) {
+      alert("Unable to update.");
+      return;
+    }
+
+    setPosts(posts.map(item =>
+      item.id === id ? { ...item, published: published } : item
+    ));
   }
 
   const deletePost = async (id: string) => {
+    let errorCode = await deletePostByIdAction(id);
+    if (errorCode != 200) {
+      alert("Unable to delete.");
+      return;
+    }
+
     setPosts((posts) => posts.filter((post) => post.id !== id));
   }
 
