@@ -62,4 +62,189 @@
   body {
     @apply bg-background text-foreground
   }
+
+  .ToolbarContainer {
+    @apply flex justify-center items-center h-10 sticky z-[1] -mt-5 mb-5 -mx-5 rounded-[10px_10px_0_0] border-b-2 border-b-[#999999] border-solid top-0;
+    background: #ffffff;
+  }
+  .ToolbarContainer.sticky {
+    @apply shadow-[0px_3px_5px_-3px_rgba(#333333,0.5)] border-t-2 border-t-transparent border-solid;
+  }
+  .Toolbar {
+    @apply flex;
+  }
+  .Toolbar .icon {
+    @apply w-6 h-6 flex justify-center items-center text-[#333333] rounded-[5px] hover:text-white hover:cursor-pointer;
+  }
+  .Toolbar .icon.disabled {
+    @apply text-[rgba(#333333,0.5)] pointer-events-none;
+  }
+  .Toolbar .icon:hover {
+    background: #333333;
+  }
+  .Toolbar .divider {
+    @apply mx-2.5 my-0.5 border-l-2 border-l-[rgba(#333333,0.2)] border-[none] border-solid;
+  }
+  .Toolbar .icon + .icon {
+    @apply ml-1;
+  }
+
+
+  .ProseMirror:focus-visible {
+    outline: none;
+  }
+  .ProseMirror > * + * {
+    @apply mt-[0.75em];
+  }
+  .ProseMirror > *:first-child {
+    @apply mt-0;
+  }
+  .ProseMirror > *:last-child {
+    @apply mb-0;
+  }
+  .ProseMirror ul,
+  .ProseMirror ol {
+    @apply mx-0 my-[0.8em] pl-[2em] pr-0 py-0;
+  }
+  .ProseMirror ul li > ul,
+  .ProseMirror ul li > ol,
+  .ProseMirror ol li > ul,
+  .ProseMirror ol li > ol {
+    @apply m-0;
+  }
+  .ProseMirror ul li p,
+  .ProseMirror ol li p {
+    @apply inline m-0;
+  }
+  .ProseMirror ul[data-type="taskList"] {
+    @apply mx-0 my-[0.8em] pl-[0.9em] pr-0 py-0;
+    list-style: none;
+  }
+  .ProseMirror ul[data-type="taskList"] li {
+    @apply flex;
+  }
+  .ProseMirror ul[data-type="taskList"] li > label {
+    @apply flex-[0_0_auto] select-none mr-[0.5em];
+  }
+  .ProseMirror ul[data-type="taskList"] li > div {
+    @apply flex-auto;
+  }
+  .ProseMirror ul[data-type="taskList"] input[type="checkbox"] {
+    @apply cursor-pointer;
+  }
+  .ProseMirror h1,
+  .ProseMirror h2,
+  .ProseMirror h3,
+  .ProseMirror h4,
+  .ProseMirror h5,
+  .ProseMirror h6 {
+    @apply leading-[1.1];
+  }
+  .ProseMirror p {
+    @apply mx-0 my-[0.8em];
+  }
+  .ProseMirror code {
+    @apply text-[#616161] border p-px rounded-[3px] border-solid border-[rgba(#808080,0.3)];
+    background: rgba(#616161, 0.1);
+  }
+  .ProseMirror pre {
+    @apply text-[#24292e] px-4 py-3 rounded-lg;
+    background: #f5f7f9;
+    font-family: "ui-monospace", "SFMono-Regular", "SF Mono", Menlo, Consolas,
+      "Liberation Mono", monospace;
+  }
+  .ProseMirror pre code {
+    @apply text-inherit text-[0.8rem] p-0 border-[none];
+    background: none;
+  }
+  .ProseMirror blockquote {
+    @apply pl-4 border-l-2 border-l-[rgba(#0d0d0d,0.1)] border-solid;
+  }
+  .ProseMirror hr {
+    @apply mx-0 my-6 border-t-2 border-t-[rgba(#0d0d0d,0.1)] border-[none] border-solid;
+  }
+  .ProseMirror span[data-mention] {
+    @apply bg-[rgba(#005d71,0.15)] box-decoration-clone text-[0.9rem] font-[bold] rounded text-[#005d71] px-1 py-0.5;
+  }
+  .ProseMirror span[data-mention] > .char {
+    @apply inline-block align-top text-[#0098b8] ml-0 mr-0.5 mt-px mb-0;
+  }
+  .ProseMirror span[data-emoji-suggestion] > img,
+  .ProseMirror span[data-emoji-replacer] > img {
+    @apply w-[1.1em] h-[1.1em] mx-[0.05em] my-0;
+    vertical-align: -0.25em;
+  }
+  .ProseMirror p.is-editor-empty:first-child::before {
+    @apply content-[attr(data-placeholder)] float-left text-[rgba(#111111,0.3)] pointer-events-none h-0 italic;
+  }
+  .ProseMirror .color {
+    @apply whitespace-nowrap before:content-['_'] before:inline-block before:w-[0.8em] before:h-[0.8em] before:border before:align-middle before:mr-[0.2em] before:mb-[0.15em] before:rounded-[50%] before:border-solid before:border-[rgba(#808080,0.3)];
+  }
+  .ProseMirror .color::before {
+    background: var(--color);
+  }
+
+  pre {
+    @apply text-white px-4 py-3 rounded-lg;
+    background: #0d0d0d;
+    font-family: "JetBrainsMono", monospace;
+  }
+  pre code {
+    @apply text-inherit text-[0.8rem] p-0;
+    background: none;
+  }
+
+}
+
+
+.hljs-comment,
+.hljs-quote {
+  color: #616161;
+}
+
+.hljs-variable,
+.hljs-template-variable,
+.hljs-attribute,
+.hljs-tag,
+.hljs-name,
+.hljs-regexp,
+.hljs-link,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class {
+  color: #f98181;
+}
+
+.hljs-number,
+.hljs-meta,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params {
+  color: #fbbc88;
+}
+
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet {
+  color: #b9f18d;
+}
+
+.hljs-title,
+.hljs-section {
+  color: #faf594;
+}
+
+.hljs-keyword,
+.hljs-selector-tag {
+  color: #70cff8;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: 700;
 }
